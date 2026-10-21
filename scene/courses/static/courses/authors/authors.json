@@ -54,5 +54,12 @@
 		"short_description": "Senior backend developer",
 		"courses": [{"course_id": "haskell", "course_title": "Haskell"}],
 		"full_description": "Специалист в области функционального программирования. В Haskell c 2009 года. Разрабатывал под самые разные задачи: бэк фронт, ml, crypto, финтех.<br/><br/>Увлекаюсь сочинением музыки, этническими духовыми, йогой и opensource.<br/><br/>Из наиболее интересных Haskell проектов: написал библиотеку для создания музыки и кодом csound-expression, минималистичный веб-фреймворк <a href='https://github.com/anton-k/mig' target='_blank' rel='noopener noreferrer'>mig,</a> библиотеки для реактивного программирования  dyna, анимации <a href='https://github.com/anton-k/processing-for-haskell' target='_blank' rel='noopener noreferrer'>processing-for-haskell.</a>"
-	}
+	},
+ "nikita_tokin": {
+     "full_name": "Никита Токин",
+     "email": "nikitatokin2006@gmail.com",
+     "short_description": "Rust-овчанин",
+     "courses": [{ "course_id": "rust_backend", "course_title": "Rust: бекенд на Axum" }],
+     "full_description": "Главный амбассадор языка Rust города Ростов-на-Дону, люблю функциональное программирование и пиво."
+   }
 }

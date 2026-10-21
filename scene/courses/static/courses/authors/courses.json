@@ -18,5 +18,6 @@
 	"cpp": [
 		{"author": "olga_khlopkova", "full_name": "Ольга Хлопкова"},
 		{"author": "vladimir_khatskevich", "full_name": "Владимир Хацкевич"}
-	]
+	],
+ "rust_backend": [{"author": "nikita_tokin", "full_name": "Никита Токин"}]
 }
