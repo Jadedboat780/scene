@@ -1122,117 +1122,6 @@ function add_handler_read_all_chapter() {
 })
 }
 
-
-function handleFeedbackResult(is_ok, response) {
-  del_attachments();
-  document.getElementById("feedback_send_progress").classList.add("vis_hid");
-
-  const err = '<p>Что-то пошло не так при отправке фидбэка. Пожалуйста, повторите попытку позже.</p>' + bugreport_text;
-  if (!is_ok || !response.hasOwnProperty('status') || response.status !== 0) {
-    showModal("Ошибка", err);
-    return;
-  }
-
-  showModal("Спасибо!", '<p>Ваш фидбэк отправлен команде Senior Junior.</p><p class="indent-small">Для обсуждения проекта вы также можете <a href="https://t.me/senjun_feedback" target="_blank" rel="noopener noreferrer">присоединиться к нашей телеграм-группе.</a></p>');
-}
-
-function validateAttachments() {
-  const files_input = document.getElementById('feedback_form_files');
-  var span = document.getElementById('feedback_form_files_count');
-  var btn_del = document.getElementById("del-attachments");
-
-  if (files_input.files.length === 0) {
-    span.textContent="";
-  }
-
-  if (files_input.files.length > 5) { 
-      files_input.value= null;
-      btn_del.classList.add("vis_hid");
-      showModal("Ошибка", "Количество отправляемых файлов должно быть не больше 5.");
-      return;
-  }
-
-  for (var i = 0; i < files_input.files.length; i++) { 
-      const fsize = files_input.files.item(i).size; 
-
-      if (fsize >= 10000000) { // 10 mb
-        btn_del.classList.add("vis_hid");
-        files_input.value= null;
-        showModal("Ошибка", "Размер одного файла не должен превышать 10 Мб.");
-        return;
-      }
-  }
-
-  if (files_input.files.length === 1) {
-    btn_del.classList.remove("vis_hid");
-    span.textContent="Выбран 1 файл";
-  } else {
-    btn_del.classList.remove("vis_hid");
-    span.textContent="Выбрано файлов: " + (files_input.files.length).toString();
-  }
-}
-
-function add_handler_feedback() {
-    var form = document.getElementById('feedbackUploadForm');
-
-    form.onsubmit = async (e) => {
-          e.preventDefault();
-
-          const text = document.getElementById("feedback_form").value.trim();
-          if (text.length === 0) {
-              showModal("Ошибка", "Введите пожалуйста текст фидбэка.");
-              return;
-          }
-
-          if (!is_authorized) {
-            const email = document.getElementById("email").value.trim();
-            if (email.length === 0) {
-              showModal("Ошибка", "Введите пожалуйста e-mail.<br/><br/>Мы вам напишем, если потребуется что-то уточнить или если мы выполним ваше пожелание из фидбэка.");
-              return;
-            }
-          }
-
-          document.getElementById("feedback_send_progress").classList.remove("vis_hid");
-          const form = e.currentTarget;
-          const url = form.action;
-
-          try {
-              var formData = new FormData(form);
-
-              const chapter = document.getElementById("markdown-content").firstChild.textContent;
-              formData.append("chapter", chapter);
-              formData.append("url", window.location.href);
-
-              const settings = {
-                  method: 'POST',
-                  body: formData,
-                  headers: {
-                      'Access-Control-Allow-Origin': '*',
-                      'X-CSRFToken': getCookie(csrftoken_cookie)
-                  }
-              };
-
-              const response = await fetch(url, settings);
-              if (response.status !== 200) {
-                handleFeedbackResult(false, {});
-                return;
-              }
-
-              const body = await response.json();
-              handleFeedbackResult(true, body);
-          } catch (error) {
-              console.error(error);
-              handleFeedbackResult(false, {});
-          }
-      }
-}
-
-function del_attachments() {
-  document.getElementById('feedback_form_files').value = null;
-  document.getElementById('feedback_form_files_count').textContent = "";
-  document.getElementById("del-attachments").classList.add("vis_hid");
-}
-
 function fill_side_menu() {
   var list = document.getElementById("chapter_blocks_list");
 
@@ -1369,7 +1258,6 @@ window.addEventListener('load', function () {
     add_handler_for_modal_message();
     add_handler_read_all_chapter();
 
-    add_handler_feedback();
     fill_side_menu();
 
     run_task_if_needed();

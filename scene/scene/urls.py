@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
-
 from courses import views
 
 from .settings import ADMIN_ENABLED
@@ -22,17 +21,12 @@ urlpatterns = [
     path('save_task/', views.save_task, name = 'save_task'),
     path('finish_course/', views.finish_course, name = 'finish_course'),
     path('finish_chapter/', views.finish_chapter, name = 'finish_chapter'),
-    path("v1/get_user_id/telegram_bot/", views.get_user_id_for_tg_bot, name="get_user_id_for_tg_bot"),
-    path("generate_tg_bot_key/", views.generate_tg_bot_key, name="generate_tg_bot_key"),
-    path("sync_tg_bot_with_site/", views.sync_tg_bot_with_site, name="sync_tg_bot_with_site"),
-    path("delete_tg_bot_link_from_bot/", views.delete_tg_bot_link_from_bot, name="delete_tg_bot_link_from_bot"),
-    path("delete_tg_bot_link/", views.delete_tg_bot_link, name = 'delete_tg_bot_link'),
+
     path("terms_of_use/", views.terms_of_use, name = 'terms_of_use'),
     path("privacy/", views.privacy, name = 'privacy'),
     path("terms/", views.terms, name = 'terms'),
     path("donation/", views.donation, name = 'donation'),
     path("", include("django_prometheus.urls")),
-    path('send_feedback/', views.send_feedback, name = 'send_feedback'),
     path('csrf_failure', views.csrf_failure, name = 'csrf_failure'),
     path("authors/<str:author>/", views.author, name="author"),
     path("authors/", views.authors, name="authors"),

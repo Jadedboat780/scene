@@ -170,42 +170,15 @@
                 <i class="fa fa-chevron-right fa-fw"></i>
                 Дальше
               </a>
+              <a href="https://github.com/senjun-team/senjun-courses/issues/new" class="btn-white indent-left-small">
+                <i class="fa fa-solid fa-github"></i>
+                <span class="desktop-only">Оставить фидбэк</span>
+              </a>
             </div>
         </div>
         <span id="project_contents_raw" class="hidden"> {{ project_contents_raw }} </span>
         <span id="project_contents_raw_default" class="hidden"> {{ project_contents_raw_default }} </span>
-        <div class="list-item">
-            <div id="feedback">
-              <form id="feedbackUploadForm" enctype="multipart/form-data" method="POST" action="/send_feedback/">
-              <div>
-                <textarea rows = "6" id="feedback_form" name="feedback_form" class="feedback_form" placeholder="Поделитесь фидбэком по проекту!"></textarea>
-              </div>
-              {% if user.is_authenticated == False %}
-              <div class="indent-small">
-                <input type="email" id="email" name="email" class="feedback_form" placeholder="E-mail для связи">
-              </div>
-              {% endif %}
-      
-              <div class="indent-small">
-                <input type="file" id="feedback_form_files" onchange="validateAttachments()" hidden multiple name="attachments"/>
-                <div class="indent-small">
-                  <label for="feedback_form_files" class="btn-gray"><i class="fa fa-solid fa-file"></i> Прикрепить файлы</label>
-                  <span id="feedback_form_files_count" class="indent-left-small smoky "></span>
-                  <span class="smoky vis_hid indent-left-xsmall pointer" id="del-attachments" onclick="del_attachments()"><i class="fa fa-solid fa-trash"></i></span>
-                </div>
-              </div>
-                <div class="indent-medium">
-                  <button class="btn-white" type="submit" name="submit" title="Отправить отзыв">
-                    <i class="fa fa-solid fa-paper-plane"></i>  Отправить фидбэк
-                  </button>
-                </div>
-                <div class="indent-small vis_hid" id="feedback_send_progress">
-                  <div class="loader"></div><div class="text-sender">Отправка...</div>
-                </div>
-                
-              </form>
-            </div>
-          </div>
+
       
           <div class="list-item list-item-dark">
             <div class="center-div header-div">
@@ -215,7 +188,7 @@
                         <i class="fa fa-paper-plane fa-fw footer footer-img"></i></a>
                   </div>
                   <div class="block">
-                      <a href="https://t.me/senjun_feedback" target="_blank" rel="noopener noreferrer" class="footer">Наша группа в telegram.</a> <span class="">Здесь можно задавать вопросы и общаться.</span>
+                      <a href="https://t.me/senjun_feedback" target="_blank" rel="noopener noreferrer" class="footer">Наша группа в telegram.</a> <span class="">Задавайте вопросы и общайтесь.</span>
                   </div>
               </div>
             </div>
@@ -226,7 +199,7 @@
                         <i class="fa fa-heart fa-fw  footer footer-img"></i></a>
                 </div>
                 <div class="block">
-                    <a href="/donation/" target="_blank" rel="noopener noreferrer" class="footer">Задонатить.</a> <span class="">Если вам нравится курс, вы можете поддержать развитие площадки!</span>
+                    <a href="/donation/" target="_blank" rel="noopener noreferrer" class="footer">Задонатить.</a> <span class="">Поддержите развитие площадки.</span>
                 </div>
             </div>
           </div>
