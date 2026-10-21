@@ -23,7 +23,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import cache_control
 from .models import SignupForm, LoginForm, IdRecord
 from . import communications as c
-from . import communications_bot as cb
 from scene import settings
 
 # from .users_whitelist import user_in_whitelist
@@ -297,23 +296,6 @@ def authors(request):
 
     context = {"authors": sorted_authors}
     return render(request, "authors/index.html", context)
-
-
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def send_feedback(request):
-    if request.method != "POST":
-        return JsonResponse({"status": 1})
-
-    try:
-        msg = cb.get_message(request)
-        if msg is None:
-            return JsonResponse({"status": 1})
-
-        files = request.FILES.getlist("attachments") if request.FILES else []
-        return cb.communicate_bot(msg, files)
-    except Exception as e:
-        logging.warning(f"Exception in send_feedback: {e}")
-        return JsonResponse({"status": 1})
 
 
 def build_chapter_blocks_hierarchy(chapters):
@@ -973,105 +955,3 @@ def finish_course(request):
         return JsonResponse({"error_code": 4})
 
     return JsonResponse({"course_completed": True, "course_id": course_id})
-
-@csrf_exempt
-def get_user_id_for_tg_bot(request):
-    try:
-        if not is_inner_request(request) or request.method != "POST" or len(request.body) > 200:
-            return JsonResponse({})
-
-        body = json.loads(request.body)
-
-        if body.get("key", None) != settings.TG_BOT_KEY:
-            return JsonResponse({})
-
-        if body.get("user_id", None) is None:
-            return JsonResponse({"error_code": 3})
-
-        tg_bot_user_id = body["user_id"]
-        if not isinstance(tg_bot_user_id, int):
-            return JsonResponse({"error_code": 2})
-
-        return JsonResponse({"user_id": c.get_user_id_for_bot(tg_bot_user_id)})
-    except Exception as e:
-        logging.warning(f"Error in view for bot: {e}")
-        return JsonResponse({"error_code": 1})
-
-
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@login_required
-def generate_tg_bot_key(request):
-    user = request.user
-
-    key = c.get_tg_bot_key(user.username)
-    if len(key) == 0:
-        return JsonResponse({"error": "Couldn't generate key"})
-
-    return JsonResponse({"key": key})
-
-
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@login_required
-def delete_tg_bot_link(request):
-    user = request.user
-    status = c.delete_tg_bot_link_for_user(user.username)
-    return JsonResponse({"status": status})
-
-
-@csrf_exempt
-def delete_tg_bot_link_from_bot(request):
-    try:
-        if not is_inner_request(request) or request.method != "POST" or len(request.body) > 1000:
-            return JsonResponse({})
-
-        body = json.loads(request.body)
-
-        if body.get("key", None) != settings.TG_BOT_KEY:
-            return JsonResponse({})
-
-        if body.get("user_id", None) is None:
-            return JsonResponse({})
-
-        tg_bot_user_id = body["user_id"]
-        if not isinstance(tg_bot_user_id, int):
-            return JsonResponse({})
-
-        return JsonResponse(
-            {"status": c.delete_tg_bot_link_for_tg_bot_user(tg_bot_user_id)}
-        )
-    except Exception as e:
-        logging.warning(f"Error in view for bot: {e}")
-        return JsonResponse({})
-
-
-@csrf_exempt
-def sync_tg_bot_with_site(request):
-    try:
-        if not is_inner_request(request) or request.method != "POST" or len(request.body) > 1000:
-            return JsonResponse({})
-
-        body = json.loads(request.body)
-
-        if body.get("key", None) != settings.TG_BOT_KEY:
-            return JsonResponse({})
-
-        if (
-            body.get("user_id", None) is None
-            or body.get("activation_key", None) is None
-        ):
-            return JsonResponse({})
-
-        tg_bot_user_id = body["user_id"]
-        if not isinstance(tg_bot_user_id, int):
-            return JsonResponse({})
-
-        activation_key = body["activation_key"]
-        if not isinstance(activation_key, str):
-            return JsonResponse({})
-
-        return JsonResponse(
-            {"status": c.sync_tg_bot(tg_bot_user_id, activation_key)}
-        )
-    except Exception as e:
-        logging.warning(f"Error in view for bot: {e}")
-        return JsonResponse({})
