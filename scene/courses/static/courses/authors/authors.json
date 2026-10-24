@@ -60,6 +60,6 @@
      "email": "nikitatokin2006@gmail.com",
      "short_description": "Rust-овчанин",
      "courses": [{ "course_id": "rust_backend", "course_title": "Rust: бекенд на Axum" }],
-     "full_description": "Главный амбассадор языка Rust города Ростов-на-Дону, люблю функциональное программирование и пиво."
+     "full_description": "Главный амбассадор языка Rust города Ростов-на-Дону (и единственный), люблю функциональное программирование и пиво."
    }
 }
